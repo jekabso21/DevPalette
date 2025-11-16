@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="DevPalette - Professional Color Palette Generator. Create beautiful color schemes with automatic shade generation for design systems, UI development, and branding." />
+    <meta name="keywords" content="color palette, color scheme, design system, color generator, UI design, web development" />
+    <meta name="author" content="DevPalette" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="DevPalette - Professional Color Palette Generator" />
+    <meta property="og:description" content="Create beautiful color schemes with automatic shade generation for design systems, UI development, and branding." />
+    <meta property="og:image" content="/og-image.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="DevPalette - Professional Color Palette Generator" />
+    <meta property="twitter:description" content="Create beautiful color schemes with automatic shade generation for design systems, UI development, and branding." />
+    <meta property="twitter:image" content="/og-image.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>DevPalette - Professional Color Palette Generator</title>
+
+    <style>
+      /* Critical CSS for initial load */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background-color: #18181b;
+        color: #fafafa;
+      }
+
+      #root {
+        min-height: 100vh;
+      }
+
+      /* Loading state */
+      .app-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+      }
+
+      .app-loading::after {
+        content: '';
+        width: 48px;
+        height: 48px;
+        border: 4px solid #84CC16;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spinner 0.8s linear infinite;
+      }
+
+      @keyframes spinner {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Accessibility - Focus styles */
+      :focus-visible {
+        outline: 2px solid #84CC16;
+        outline-offset: 2px;
+      }
+
+      /* Scrollbar styles */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #27272a;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #52525b;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #71717a;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="app-loading" aria-label="Loading application"></div>
+    </div>
+    <noscript>
+      <div style="padding: 20px; text-align: center; background: #27272a; color: #fafafa;">
+        <h1>JavaScript Required</h1>
+        <p>Please enable JavaScript to use DevPalette.</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

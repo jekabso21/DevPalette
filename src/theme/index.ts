@@ -1,4 +1,4 @@
-import { extendTheme, type ThemeConfig, type Theme } from '@chakra-ui/react';
+import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
 
 // Theme configuration with dark mode as default
 const config: ThemeConfig = {
@@ -283,7 +283,7 @@ const breakpoints = {
 };
 
 // Create extended theme
-const theme: Theme = extendTheme({
+const theme = extendTheme({
   config,
   colors,
   components,

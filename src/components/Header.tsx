@@ -9,21 +9,19 @@ import {
   useColorMode,
   useColorModeValue,
   Tooltip,
+  HStack,
 } from '@chakra-ui/react';
 import { FaMoon, FaSun, FaPalette } from 'react-icons/fa';
-import type { HeaderProps } from '@/types';
 
 /**
- * Application header component with branding and color mode toggle
+ * Simple, clean header component for Phase 1
  */
-export const Header = memo(function Header({
-  title = 'DevPalette',
-  showColorModeToggle = true,
-}: HeaderProps) {
+export const Header = memo(function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
   const bgColor = useColorModeValue('white', 'gray.900');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
-  const iconColor = useColorModeValue('gray.600', 'gray.400');
+  const headingColor = useColorModeValue('gray.900', 'white');
+  const taglineColor = useColorModeValue('gray.600', 'gray.400');
 
   return (
     <Box
@@ -37,64 +35,65 @@ export const Header = memo(function Header({
       backdropFilter="blur(10px)"
       sx={{
         backgroundColor: useColorModeValue(
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(26, 32, 44, 0.8)'
+          'rgba(255, 255, 255, 0.95)',
+          'rgba(26, 32, 44, 0.95)'
         ),
       }}
+      boxShadow="sm"
     >
-      <Container maxW="container.xl" py={4}>
+      <Container maxW="container.xl" py={{ base: 3, md: 4 }}>
         <Flex align="center" justify="space-between">
           {/* Logo and Title */}
-          <Flex align="center" gap={3}>
+          <HStack spacing={{ base: 2, md: 3 }}>
             <Box
               as={FaPalette}
-              fontSize="28px"
+              fontSize={{ base: '24px', md: '28px' }}
               color="brand.500"
               aria-hidden="true"
+              transition="transform 0.2s"
+              _hover={{ transform: 'rotate(15deg)' }}
             />
             <Box>
               <Heading
                 as="h1"
-                size="lg"
+                size={{ base: 'md', md: 'lg' }}
                 fontWeight="bold"
                 letterSpacing="tight"
-                color={useColorModeValue('gray.900', 'gray.100')}
+                color={headingColor}
               >
-                {title}
+                DevPalette
               </Heading>
               <Text
-                fontSize="sm"
-                color={useColorModeValue('gray.600', 'gray.400')}
+                fontSize={{ base: 'xs', sm: 'sm' }}
+                color={taglineColor}
                 display={{ base: 'none', sm: 'block' }}
               >
-                Professional Color Palette Generator
+                Generate perfect color shades instantly
               </Text>
             </Box>
-          </Flex>
+          </HStack>
 
-          {/* Actions */}
-          <Flex align="center" gap={2}>
-            {showColorModeToggle && (
-              <Tooltip
-                label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
-                placement="bottom"
-                hasArrow
-              >
-                <IconButton
-                  aria-label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
-                  icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
-                  onClick={toggleColorMode}
-                  variant="ghost"
-                  color={iconColor}
-                  _hover={{
-                    bg: useColorModeValue('gray.100', 'gray.700'),
-                    color: 'brand.400',
-                  }}
-                  size="md"
-                />
-              </Tooltip>
-            )}
-          </Flex>
+          {/* Dark Mode Toggle */}
+          <Tooltip
+            label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
+            placement="bottom-end"
+            hasArrow
+          >
+            <IconButton
+              aria-label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
+              icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
+              onClick={toggleColorMode}
+              variant="ghost"
+              color={taglineColor}
+              _hover={{
+                bg: useColorModeValue('gray.100', 'gray.700'),
+                color: 'brand.400',
+                transform: 'scale(1.1)',
+              }}
+              size={{ base: 'sm', md: 'md' }}
+              transition="all 0.2s"
+            />
+          </Tooltip>
         </Flex>
       </Container>
     </Box>

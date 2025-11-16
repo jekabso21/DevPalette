@@ -1,47 +1,41 @@
 import { useState, useCallback, useEffect, memo } from 'react';
 import {
   Box,
-  VStack,
   HStack,
   Input,
-  Text,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  InputGroup,
-  InputLeftAddon,
   Button,
   Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
   useColorModeValue,
-  Flex,
+  InputGroup,
+  InputLeftAddon,
+  Card,
+  CardBody,
+  VStack,
+  Text,
+  Tooltip,
 } from '@chakra-ui/react';
-import { HexColorPicker, HexColorInput } from 'react-colorful';
-import { FaEyeDropper, FaRandom } from 'react-icons/fa';
+import { HexColorPicker } from 'react-colorful';
+import { FaPalette, FaRandom } from 'react-icons/fa';
 import type { ColorPickerProps } from '@/types';
 import { validateColor, normalizeHexColor, randomColor } from '@/utils/colorHelpers';
 
 /**
- * Color picker component using react-colorful with Chakra UI
- * Includes hex input field with validation and visual preview
+ * Simplified, compact color picker for Phase 1
+ * Side-by-side layout with color preview, hex input, and random button
  */
 export const ColorPicker = memo(function ColorPicker({
   color,
   onChange,
-  label = 'Primary Color',
-  placeholder = '#84CC16',
 }: ColorPickerProps) {
   const [inputValue, setInputValue] = useState<string>(color);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
-  const textColor = useColorModeValue('gray.700', 'gray.300');
+  const errorColor = useColorModeValue('red.500', 'red.300');
 
   // Sync input value with external color prop
   useEffect(() => {
@@ -49,7 +43,6 @@ export const ColorPicker = memo(function ColorPicker({
     if (validation.isValid && validation.normalizedValue) {
       setInputValue(validation.normalizedValue);
       setIsValid(true);
-      setErrorMessage('');
     }
   }, [color]);
 
@@ -61,7 +54,6 @@ export const ColorPicker = memo(function ColorPicker({
       const normalized = normalizeHexColor(newColor);
       setInputValue(normalized);
       setIsValid(true);
-      setErrorMessage('');
       onChange(normalized);
     },
     [onChange]
@@ -75,20 +67,15 @@ export const ColorPicker = memo(function ColorPicker({
       const value = e.target.value;
       setInputValue(value);
 
-      // Validate on every change
       if (value.length > 0) {
         const validation = validateColor(value);
         setIsValid(validation.isValid);
 
         if (validation.isValid && validation.normalizedValue) {
-          setErrorMessage('');
           onChange(validation.normalizedValue);
-        } else {
-          setErrorMessage(validation.error || 'Invalid color format');
         }
       } else {
         setIsValid(false);
-        setErrorMessage('Color is required');
       }
     },
     [onChange]
@@ -113,168 +100,127 @@ export const ColorPicker = memo(function ColorPicker({
     const newColor = randomColor({ luminosity: 'bright' });
     setInputValue(newColor);
     setIsValid(true);
-    setErrorMessage('');
     onChange(newColor);
   }, [onChange]);
 
-  /**
-   * Handle paste event
-   */
-  const handlePaste = useCallback(
-    (e: React.ClipboardEvent<HTMLInputElement>) => {
-      e.preventDefault();
-      const pastedText = e.clipboardData.getData('text');
-
-      const validation = validateColor(pastedText);
-      if (validation.isValid && validation.normalizedValue) {
-        setInputValue(validation.normalizedValue);
-        setIsValid(true);
-        setErrorMessage('');
-        onChange(validation.normalizedValue);
-      } else {
-        setInputValue(pastedText);
-        setIsValid(false);
-        setErrorMessage(validation.error || 'Invalid color format');
-      }
-    },
-    [onChange]
-  );
-
   return (
-    <VStack spacing={4} align="stretch" width="100%" maxW="400px">
-      {/* Label */}
-      <Text fontSize="lg" fontWeight="semibold" color={textColor}>
-        {label}
-      </Text>
-
-      {/* Color Preview and Picker */}
-      <HStack spacing={3} align="stretch">
-        {/* Color Preview Box */}
-        <Popover placement="bottom-start" isLazy>
-          <PopoverTrigger>
-            <Box
-              as="button"
-              width="80px"
-              height="80px"
-              borderRadius="lg"
-              bg={isValid ? inputValue : 'gray.500'}
-              border="3px solid"
-              borderColor={borderColor}
-              cursor="pointer"
-              transition="all 0.2s"
-              _hover={{
-                transform: 'scale(1.05)',
-                boxShadow: 'lg',
-              }}
-              _focus={{
-                outline: 'none',
-                boxShadow: 'outline',
-              }}
-              aria-label="Open color picker"
-              position="relative"
-              overflow="hidden"
-            >
-              {!isValid && (
+    <Card
+      bg={bgColor}
+      borderColor={borderColor}
+      variant="outline"
+      maxW="500px"
+      w="100%"
+      overflow="visible"
+    >
+      <CardBody>
+        <HStack spacing={4} align="center">
+          {/* Color Preview and Picker */}
+          <Popover placement="bottom-start" isLazy>
+            <PopoverTrigger>
+              <Box
+                as="button"
+                width="80px"
+                height="80px"
+                minW="80px"
+                borderRadius="lg"
+                bg={isValid ? inputValue : 'gray.500'}
+                border="3px solid"
+                borderColor={isValid ? borderColor : errorColor}
+                cursor="pointer"
+                transition="all 0.2s"
+                position="relative"
+                overflow="hidden"
+                _hover={{
+                  transform: 'scale(1.05)',
+                  boxShadow: 'lg',
+                }}
+                _focus={{
+                  outline: 'none',
+                  boxShadow: '0 0 0 3px',
+                  boxShadowColor: 'brand.200',
+                }}
+                aria-label="Open color picker"
+              >
                 <Box
                   position="absolute"
-                  inset={0}
-                  bg="repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)"
-                />
-              )}
-              <Flex
-                position="absolute"
-                bottom={1}
-                right={1}
-                bg="blackAlpha.600"
-                borderRadius="sm"
-                px={1}
+                  bottom={1}
+                  right={1}
+                  bg="blackAlpha.600"
+                  borderRadius="sm"
+                  p={1}
+                >
+                  <FaPalette size={10} color="white" />
+                </Box>
+              </Box>
+            </PopoverTrigger>
+            <PopoverContent width="auto" bg={bgColor} borderColor={borderColor}>
+              <PopoverBody p={4}>
+                <VStack spacing={3}>
+                  <HexColorPicker
+                    color={isValid ? inputValue : '#84CC16'}
+                    onChange={handleColorChange}
+                    style={{ width: '240px', height: '200px' }}
+                  />
+                  <Text fontSize="xs" color="gray.500">
+                    Click and drag to select a color
+                  </Text>
+                </VStack>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+
+          {/* Right side: Input and Random Button */}
+          <VStack align="stretch" flex={1} spacing={2}>
+            {/* Hex Input */}
+            <InputGroup size="lg">
+              <InputLeftAddon bg={useColorModeValue('gray.50', 'gray.700')}>
+                #
+              </InputLeftAddon>
+              <Input
+                value={inputValue.replace('#', '')}
+                onChange={(e) => handleInputChange({
+                  ...e,
+                  target: { ...e.target, value: '#' + e.target.value },
+                } as React.ChangeEvent<HTMLInputElement>)}
+                onBlur={handleInputBlur}
+                placeholder="84CC16"
+                fontFamily="mono"
+                textTransform="uppercase"
+                maxLength={6}
+                borderColor={!isValid ? errorColor : undefined}
+                _focus={{
+                  borderColor: isValid ? 'brand.400' : errorColor,
+                  boxShadow: isValid ? '0 0 0 1px' : '0 0 0 1px',
+                  boxShadowColor: isValid ? 'brand.400' : errorColor,
+                }}
+                aria-label="Hex color code"
+                aria-invalid={!isValid}
+              />
+            </InputGroup>
+
+            {/* Random Button */}
+            <Tooltip label="Generate a random color" placement="bottom">
+              <Button
+                leftIcon={<FaRandom />}
+                onClick={handleRandomColor}
+                variant="outline"
+                colorScheme="brand"
+                size="sm"
+                w="100%"
+                _hover={{
+                  bg: useColorModeValue('brand.50', 'brand.900'),
+                  transform: 'translateY(-1px)',
+                  boxShadow: 'sm',
+                }}
+                transition="all 0.2s"
               >
-                <FaEyeDropper size={12} color="white" />
-              </Flex>
-            </Box>
-          </PopoverTrigger>
-          <PopoverContent width="auto" bg={bgColor} borderColor={borderColor}>
-            <PopoverArrow bg={bgColor} />
-            <PopoverCloseButton />
-            <PopoverBody p={4}>
-              <VStack spacing={3}>
-                <HexColorPicker
-                  color={isValid ? inputValue : '#84CC16'}
-                  onChange={handleColorChange}
-                  style={{ width: '240px', height: '200px' }}
-                />
-                <HexColorInput
-                  color={isValid ? inputValue : '#84CC16'}
-                  onChange={handleColorChange}
-                  prefixed
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    borderRadius: '6px',
-                    border: `1px solid ${borderColor}`,
-                    backgroundColor: 'transparent',
-                    color: 'inherit',
-                    fontSize: '14px',
-                    fontFamily: 'monospace',
-                  }}
-                  aria-label="Hex color input in picker"
-                />
-              </VStack>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
-
-        {/* Input Field */}
-        <FormControl isInvalid={!isValid} flex={1}>
-          <FormLabel srOnly>{label} hex value</FormLabel>
-          <InputGroup size="lg">
-            <InputLeftAddon bg={useColorModeValue('gray.50', 'gray.700')}>
-              #
-            </InputLeftAddon>
-            <Input
-              value={inputValue.replace('#', '')}
-              onChange={(e) => handleInputChange({
-                ...e,
-                target: { ...e.target, value: '#' + e.target.value },
-              } as React.ChangeEvent<HTMLInputElement>)}
-              onBlur={handleInputBlur}
-              onPaste={handlePaste}
-              placeholder={placeholder.replace('#', '')}
-              fontFamily="mono"
-              textTransform="uppercase"
-              maxLength={6}
-              aria-label={`${label} hex color code`}
-              aria-invalid={!isValid}
-              aria-describedby={!isValid ? 'color-error' : undefined}
-            />
-          </InputGroup>
-          {!isValid && (
-            <FormErrorMessage id="color-error" fontSize="sm">
-              {errorMessage}
-            </FormErrorMessage>
-          )}
-        </FormControl>
-      </HStack>
-
-      {/* Action Buttons */}
-      <HStack spacing={2}>
-        <Button
-          leftIcon={<FaRandom />}
-          onClick={handleRandomColor}
-          variant="outline"
-          size="sm"
-          colorScheme="brand"
-          aria-label="Generate random color"
-        >
-          Random
-        </Button>
-        {isValid && (
-          <Text fontSize="sm" color={textColor} fontFamily="mono">
-            {inputValue.toUpperCase()}
-          </Text>
-        )}
-      </HStack>
-    </VStack>
+                Random Color
+              </Button>
+            </Tooltip>
+          </VStack>
+        </HStack>
+      </CardBody>
+    </Card>
   );
 });
 

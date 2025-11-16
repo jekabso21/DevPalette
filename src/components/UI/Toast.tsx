@@ -7,7 +7,6 @@ import {
   IconButton,
   useColorModeValue,
   chakra,
-  keyframes,
 } from '@chakra-ui/react';
 import { FaCheck, FaTimes, FaInfo, FaExclamationTriangle } from 'react-icons/fa';
 import type { ToastType } from '@/types';
@@ -25,27 +24,8 @@ interface CustomToastProps {
   action?: ReactNode;
 }
 
-const slideIn = keyframes`
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-`;
-
-const slideOut = keyframes`
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-`;
+// Animation will be handled by Chakra's built-in toast system
+// Remove custom keyframes as they're not needed
 
 export const CustomToast = memo(function CustomToast({
   type,
@@ -102,7 +82,7 @@ export const CustomToast = memo(function CustomToast({
       maxW="500px"
       position="relative"
       overflow="hidden"
-      animation={`${slideIn} 0.3s ease-out`}
+      transition="all 0.3s ease-out"
       _hover={{
         boxShadow: '2xl',
       }}

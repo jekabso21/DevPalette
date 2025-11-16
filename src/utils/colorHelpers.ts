@@ -433,11 +433,19 @@ export function getContrastTextColor(backgroundColor: string): 'light' | 'dark' 
 }
 
 /**
- * Check if a shade is considered light (for UI purposes)
+ * Check if a color is considered light based on its luminance
  *
- * @param shade - Shade number (50-900)
- * @returns true if shade is light (50-400)
+ * @param color - The hex color string
+ * @returns True if the color is light
  */
-export function isLightShade(shade: number): boolean {
-  return shade <= 400;
+export function isLightShade(color: string): boolean {
+  try {
+    // Use chroma to calculate luminance
+    const luminance = chroma(color).luminance();
+    // Colors with luminance > 0.5 are considered light
+    return luminance > 0.5;
+  } catch {
+    // Default to false if color is invalid
+    return false;
+  }
 }

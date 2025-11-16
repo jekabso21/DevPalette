@@ -11,7 +11,7 @@ import {
   Fade,
 } from '@chakra-ui/react';
 import { FaCheck, FaCopy } from 'react-icons/fa';
-import type { ColorSwatchProps, ColorSwatchData } from '@/types';
+import type { ColorSwatchProps } from '@/types';
 import { useColorClipboard } from '@/hooks/useClipboard';
 import { getContrastTextColor, meetsWCAGAA } from '@/utils/colorHelpers';
 

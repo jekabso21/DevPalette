@@ -11,7 +11,7 @@ import type { UseClipboardReturn } from '@/types';
 export function useClipboard(timeout: number = 2000): UseClipboardReturn {
   const [copied, setCopied] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -172,7 +172,7 @@ export function useColorClipboard(options?: {
   error: Error | null;
   reset: () => void;
 } {
-  const { timeout = 2000, format = 'hex' } = options || {};
+  const { timeout = 2000 } = options || {};
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
   const clipboard = useClipboard(timeout);
 

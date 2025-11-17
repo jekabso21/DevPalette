@@ -1,7 +1,5 @@
 import { useState, useCallback, useEffect, memo } from 'react';
 import {
-  Box,
-  HStack,
   Input,
   Button,
   Popover,
@@ -23,8 +21,8 @@ import type { ColorPickerProps } from '@/types';
 import { validateColor, normalizeHexColor, randomColor } from '@/utils/colorHelpers';
 
 /**
- * Simplified, compact color picker for Phase 1
- * Side-by-side layout with color preview, hex input, and random button
+ * Enhanced color picker with improved visual design
+ * Clean, modern interface with better visual hierarchy
  */
 export const ColorPicker = memo(function ColorPicker({
   color,
@@ -36,6 +34,8 @@ export const ColorPicker = memo(function ColorPicker({
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const errorColor = useColorModeValue('red.500', 'red.300');
+  const headingColor = useColorModeValue('gray.800', 'white');
+  const textColor = useColorModeValue('gray.600', 'gray.400');
 
   // Sync input value with external color prop
   useEffect(() => {
@@ -104,123 +104,139 @@ export const ColorPicker = memo(function ColorPicker({
   }, [onChange]);
 
   return (
-    <Card
-      bg={bgColor}
-      borderColor={borderColor}
-      variant="outline"
-      maxW="500px"
-      w="100%"
-      overflow="visible"
-    >
-      <CardBody>
-        <HStack spacing={4} align="center">
-          {/* Color Preview and Picker */}
-          <Popover placement="bottom-start" isLazy>
-            <PopoverTrigger>
-              <Box
-                as="button"
-                width="80px"
-                height="80px"
-                minW="80px"
-                borderRadius="lg"
-                bg={isValid ? inputValue : 'gray.500'}
-                border="3px solid"
-                borderColor={isValid ? borderColor : errorColor}
-                cursor="pointer"
-                transition="all 0.2s"
-                position="relative"
-                overflow="hidden"
-                _hover={{
-                  transform: 'scale(1.05)',
-                  boxShadow: 'lg',
-                }}
-                _focus={{
-                  outline: 'none',
-                  boxShadow: '0 0 0 3px',
-                  boxShadowColor: 'brand.200',
-                }}
-                aria-label="Open color picker"
-              >
-                <Box
-                  position="absolute"
-                  bottom={1}
-                  right={1}
-                  bg="blackAlpha.600"
-                  borderRadius="sm"
-                  p={1}
+    <VStack spacing={4} align="stretch" w="100%">
+      {/* Color Picker Card */}
+      <Card
+        bg={bgColor}
+        borderColor={borderColor}
+        variant="outline"
+        w="100%"
+        overflow="visible"
+        boxShadow="sm"
+        _hover={{
+          boxShadow: 'md',
+          borderColor: 'brand.400',
+        }}
+        transition="all 0.2s"
+      >
+        <CardBody p={4}>
+          <VStack spacing={4} align="stretch">
+            {/* Color Picker Trigger */}
+            <Popover placement="bottom" isLazy>
+              <PopoverTrigger>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  w="100%"
+                  h="60px"
+                  leftIcon={<FaPalette size={20} />}
+                  borderColor={borderColor}
+                  bg={useColorModeValue('white', 'gray.700')}
+                  _hover={{
+                    bg: useColorModeValue('gray.50', 'gray.600'),
+                    borderColor: 'brand.400',
+                    transform: 'translateY(-1px)',
+                  }}
+                  transition="all 0.2s"
                 >
-                  <FaPalette size={10} color="white" />
-                </Box>
-              </Box>
-            </PopoverTrigger>
-            <PopoverContent width="auto" bg={bgColor} borderColor={borderColor}>
-              <PopoverBody p={4}>
-                <VStack spacing={3}>
-                  <HexColorPicker
-                    color={isValid ? inputValue : '#84CC16'}
-                    onChange={handleColorChange}
-                    style={{ width: '240px', height: '200px' }}
-                  />
-                  <Text fontSize="xs" color="gray.500">
-                    Click and drag to select a color
-                  </Text>
-                </VStack>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
+                  <VStack spacing={0} align="start">
+                    <Text fontSize="sm" fontWeight="normal" color={textColor}>
+                      Color Picker
+                    </Text>
+                    <Text fontSize="md" fontWeight="bold" fontFamily="mono" color={headingColor}>
+                      {isValid ? inputValue : 'Select Color'}
+                    </Text>
+                  </VStack>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent width="auto" bg={bgColor} borderColor={borderColor} boxShadow="xl">
+                <PopoverBody p={4}>
+                  <VStack spacing={3}>
+                    <HexColorPicker
+                      color={isValid ? inputValue : '#84CC16'}
+                      onChange={handleColorChange}
+                      style={{ width: '280px', height: '240px' }}
+                    />
+                    <Text fontSize="xs" color="gray.500">
+                      Click and drag to select a color
+                    </Text>
+                  </VStack>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
 
-          {/* Right side: Input and Random Button */}
-          <VStack align="stretch" flex={1} spacing={2}>
             {/* Hex Input */}
-            <InputGroup size="lg">
-              <InputLeftAddon bg={useColorModeValue('gray.50', 'gray.700')}>
-                #
-              </InputLeftAddon>
-              <Input
-                value={inputValue.replace('#', '')}
-                onChange={(e) => handleInputChange({
-                  ...e,
-                  target: { ...e.target, value: '#' + e.target.value },
-                } as React.ChangeEvent<HTMLInputElement>)}
-                onBlur={handleInputBlur}
-                placeholder="84CC16"
-                fontFamily="mono"
-                textTransform="uppercase"
-                maxLength={6}
-                borderColor={!isValid ? errorColor : undefined}
-                _focus={{
-                  borderColor: isValid ? 'brand.400' : errorColor,
-                  boxShadow: isValid ? '0 0 0 1px' : '0 0 0 1px',
-                  boxShadowColor: isValid ? 'brand.400' : errorColor,
-                }}
-                aria-label="Hex color code"
-                aria-invalid={!isValid}
-              />
-            </InputGroup>
-
-            {/* Random Button */}
-            <Tooltip label="Generate a random color" placement="bottom">
-              <Button
-                leftIcon={<FaRandom />}
-                onClick={handleRandomColor}
-                variant="outline"
-                colorScheme="brand"
-                size="sm"
-                w="100%"
-                _hover={{
-                  bg: useColorModeValue('brand.50', 'brand.900'),
-                  transform: 'translateY(-1px)',
-                  boxShadow: 'sm',
-                }}
-                transition="all 0.2s"
-              >
-                Random Color
-              </Button>
-            </Tooltip>
+            <VStack align="stretch" spacing={2}>
+              <Text fontSize="xs" fontWeight="semibold" color={textColor} textTransform="uppercase">
+                Hex Code
+              </Text>
+              <InputGroup size="lg">
+                <InputLeftAddon
+                  bg={useColorModeValue('gray.50', 'gray.700')}
+                  borderColor={!isValid ? errorColor : borderColor}
+                >
+                  #
+                </InputLeftAddon>
+                <Input
+                  value={inputValue.replace('#', '')}
+                  onChange={(e) => handleInputChange({
+                    ...e,
+                    target: { ...e.target, value: '#' + e.target.value },
+                  } as React.ChangeEvent<HTMLInputElement>)}
+                  onBlur={handleInputBlur}
+                  placeholder="84CC16"
+                  fontFamily="mono"
+                  textTransform="uppercase"
+                  maxLength={6}
+                  borderColor={!isValid ? errorColor : borderColor}
+                  bg={useColorModeValue('white', 'gray.700')}
+                  _focus={{
+                    borderColor: isValid ? 'brand.400' : errorColor,
+                    boxShadow: 'none',
+                    bg: useColorModeValue('white', 'gray.600'),
+                  }}
+                  _hover={{
+                    borderColor: isValid ? 'brand.300' : errorColor,
+                  }}
+                  aria-label="Hex color code"
+                  aria-invalid={!isValid}
+                />
+              </InputGroup>
+              {!isValid && (
+                <Text fontSize="xs" color={errorColor}>
+                  Please enter a valid hex color code
+                </Text>
+              )}
+            </VStack>
           </VStack>
-        </HStack>
-      </CardBody>
-    </Card>
+        </CardBody>
+      </Card>
+
+      {/* Random Color Button */}
+      <Tooltip label="Generate a random color" placement="bottom">
+        <Button
+          leftIcon={<FaRandom />}
+          onClick={handleRandomColor}
+          variant="solid"
+          colorScheme="brand"
+          size="lg"
+          w="100%"
+          h="60px"
+          fontSize="md"
+          fontWeight="bold"
+          _hover={{
+            transform: 'translateY(-2px)',
+            boxShadow: 'lg',
+          }}
+          _active={{
+            transform: 'translateY(0)',
+          }}
+          transition="all 0.2s"
+        >
+          Generate Random Color
+        </Button>
+      </Tooltip>
+    </VStack>
   );
 });
 

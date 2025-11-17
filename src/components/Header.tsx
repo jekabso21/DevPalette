@@ -10,11 +10,13 @@ import {
   useColorModeValue,
   Tooltip,
   HStack,
+  Link,
+  Badge,
 } from '@chakra-ui/react';
-import { FaMoon, FaSun, FaPalette } from 'react-icons/fa';
+import { FaMoon, FaSun, FaPalette, FaGithub } from 'react-icons/fa';
 
 /**
- * Simple, clean header component for Phase 1
+ * Enhanced header component with GitHub link and improved styling
  */
 export const Header = memo(function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -40,60 +42,98 @@ export const Header = memo(function Header() {
         ),
       }}
       boxShadow="sm"
+      h={{ base: '70px', md: '80px' }}
+      display="flex"
+      alignItems="center"
     >
-      <Container maxW="container.xl" py={{ base: 3, md: 4 }}>
+      <Container maxW="100%" px={{ base: 4, md: 6 }}>
         <Flex align="center" justify="space-between">
           {/* Logo and Title */}
           <HStack spacing={{ base: 2, md: 3 }}>
             <Box
               as={FaPalette}
-              fontSize={{ base: '24px', md: '28px' }}
+              fontSize={{ base: '28px', md: '32px' }}
               color="brand.500"
               aria-hidden="true"
               transition="transform 0.2s"
               _hover={{ transform: 'rotate(15deg)' }}
             />
             <Box>
-              <Heading
-                as="h1"
-                size={{ base: 'md', md: 'lg' }}
-                fontWeight="bold"
-                letterSpacing="tight"
-                color={headingColor}
-              >
-                DevPalette
-              </Heading>
+              <HStack align="baseline" spacing={2}>
+                <Heading
+                  as="h1"
+                  size={{ base: 'md', md: 'lg' }}
+                  fontWeight="bold"
+                  letterSpacing="tight"
+                  color={headingColor}
+                >
+                  DevPalette
+                </Heading>
+                <Badge
+                  colorScheme="brand"
+                  fontSize="xs"
+                  px={2}
+                  py={0.5}
+                  borderRadius="full"
+                  display={{ base: 'none', md: 'inline-flex' }}
+                >
+                  v2.0
+                </Badge>
+              </HStack>
               <Text
                 fontSize={{ base: 'xs', sm: 'sm' }}
                 color={taglineColor}
                 display={{ base: 'none', sm: 'block' }}
               >
-                Generate perfect color shades instantly
+                Professional color palette generator for developers
               </Text>
             </Box>
           </HStack>
 
-          {/* Dark Mode Toggle */}
-          <Tooltip
-            label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
-            placement="bottom-end"
-            hasArrow
-          >
-            <IconButton
-              aria-label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
-              icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
-              onClick={toggleColorMode}
-              variant="ghost"
-              color={taglineColor}
-              _hover={{
-                bg: useColorModeValue('gray.100', 'gray.700'),
-                color: 'brand.400',
-                transform: 'scale(1.1)',
-              }}
-              size={{ base: 'sm', md: 'md' }}
-              transition="all 0.2s"
-            />
-          </Tooltip>
+          {/* Actions */}
+          <HStack spacing={{ base: 1, md: 2 }}>
+            {/* GitHub Link */}
+            <Tooltip label="View on GitHub" placement="bottom" hasArrow>
+              <IconButton
+                as={Link}
+                href="https://github.com/yourusername/devpalette"
+                isExternal
+                aria-label="View on GitHub"
+                icon={<FaGithub />}
+                variant="ghost"
+                color={taglineColor}
+                _hover={{
+                  bg: useColorModeValue('gray.100', 'gray.700'),
+                  color: headingColor,
+                  transform: 'scale(1.1)',
+                }}
+                size={{ base: 'sm', md: 'md' }}
+                transition="all 0.2s"
+              />
+            </Tooltip>
+
+            {/* Dark Mode Toggle */}
+            <Tooltip
+              label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
+              placement="bottom"
+              hasArrow
+            >
+              <IconButton
+                aria-label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
+                icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
+                onClick={toggleColorMode}
+                variant="ghost"
+                color={taglineColor}
+                _hover={{
+                  bg: useColorModeValue('gray.100', 'gray.700'),
+                  color: 'brand.400',
+                  transform: 'scale(1.1)',
+                }}
+                size={{ base: 'sm', md: 'md' }}
+                transition="all 0.2s"
+              />
+            </Tooltip>
+          </HStack>
         </Flex>
       </Container>
     </Box>

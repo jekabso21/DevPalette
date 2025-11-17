@@ -41,10 +41,22 @@ export interface ColorSwatchData {
 // Color scheme generation methods
 export type ColorSchemeType = 'monochromatic' | 'analogous' | 'complementary' | 'triadic' | 'tetradic';
 
+// Palette types including split-complementary
+export type PaletteType = 'monochromatic' | 'analogous' | 'complementary' | 'triadic' | 'split-complementary' | 'tetradic';
+
 // Interface for color scheme
 export interface ColorScheme {
   type: ColorSchemeType;
   primary: string;
+  colors: string[];
+  shades: ColorShades[];
+}
+
+// Interface for enhanced color palette
+export interface ColorPalette {
+  type: PaletteType;
+  name: string;
+  description: string;
   colors: string[];
   shades: ColorShades[];
 }

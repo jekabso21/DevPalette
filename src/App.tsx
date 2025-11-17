@@ -11,12 +11,23 @@ import {
   ScaleFade,
   Container,
   Stack,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  useDisclosure,
 } from '@chakra-ui/react';
+import { FaDownload } from 'react-icons/fa';
 import { Header } from '@/components/Header';
 import { ColorPicker } from '@/components/ColorPicker';
 import { PaletteSectionVariations } from '@/components/ColorSchemes/PaletteSectionVariations';
+import { ExportPanel } from '@/components/Export/ExportPanel';
 import { generateAllPaletteVariations } from '@/utils/colorGeneratorVariations';
-import type { PaletteType, PaletteWithVariations } from '@/types';
+import { generateShades } from '@/utils/shadeGenerator';
+import type { PaletteType, PaletteWithVariations, ColorShades } from '@/types';
 
 /**
  * Main application component - Enhanced with multiple palette variations
@@ -25,6 +36,9 @@ import type { PaletteType, PaletteWithVariations } from '@/types';
 function App() {
   // Single state: the selected color
   const [primaryColor, setPrimaryColor] = useState<string>('#84CC16');
+
+  // Export modal state
+  const { isOpen: isExportOpen, onOpen: onExportOpen, onClose: onExportClose } = useDisclosure();
 
   // Theme values
   const bgColor = useColorModeValue('gray.50', 'gray.900');
@@ -36,6 +50,11 @@ function App() {
   // Generate all color palette variations whenever primary color changes
   const palettes = useMemo<Record<PaletteType, PaletteWithVariations>>(() => {
     return generateAllPaletteVariations(primaryColor);
+  }, [primaryColor]);
+
+  // Generate shades for export
+  const shades = useMemo<ColorShades>(() => {
+    return generateShades(primaryColor);
   }, [primaryColor]);
 
   // Order of palettes to display
@@ -126,6 +145,25 @@ function App() {
                 />
               </Fade>
 
+              {/* Export Button */}
+              <Fade in={true} transition={{ enter: { delay: 0.15 } }}>
+                <Button
+                  leftIcon={<FaDownload />}
+                  colorScheme="brand"
+                  size="lg"
+                  width="full"
+                  onClick={onExportOpen}
+                  variant="solid"
+                  _hover={{
+                    transform: 'translateY(-2px)',
+                    boxShadow: 'lg',
+                  }}
+                  transition="all 0.2s"
+                >
+                  Export Palette
+                </Button>
+              </Fade>
+
               {/* Instructions */}
               <Fade in={true} transition={{ enter: { delay: 0.2 } }}>
                 <VStack
@@ -204,6 +242,22 @@ function App() {
           </GridItem>
         </Grid>
       </Box>
+
+      {/* Export Modal */}
+      <Modal isOpen={isExportOpen} onClose={onExportClose} size="xl">
+        <ModalOverlay />
+        <ModalContent maxW="4xl">
+          <ModalHeader>Export Color Palette</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <ExportPanel
+              shades={shades}
+              primaryColor={primaryColor}
+              onClose={onExportClose}
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }

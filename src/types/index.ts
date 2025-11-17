@@ -165,3 +165,18 @@ export function isValidHexColor(value: string): boolean {
 export function isColorFormat(value: string): value is ColorFormat {
   return ['hex', 'rgb', 'hsl'].includes(value);
 }
+
+// Export format types
+export type ExportFormat = 'tailwind' | 'css' | 'scss' | 'javascript' | 'figma';
+
+// Export configuration interface
+export interface ExportConfig {
+  format: ExportFormat;
+  colorName: string;
+  shades: ColorShades;
+}
+
+// Type guard for export format
+export function isExportFormat(value: string): value is ExportFormat {
+  return ['tailwind', 'css', 'scss', 'javascript', 'figma'].includes(value);
+}

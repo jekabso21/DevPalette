@@ -165,6 +165,24 @@ export function formatRGB(r: number, g: number, b: number): string {
 }
 
 /**
+ * Convert hex color to HSL string
+ *
+ * @param hex - Hex color value
+ * @returns HSL color string
+ */
+export function hexToHsl(hex: string): string {
+  try {
+    const [h, s, l] = chroma(hex).hsl();
+    const hue = isNaN(h) ? 0 : Math.round(h);
+    const saturation = Math.round(s * 100);
+    const lightness = Math.round(l * 100);
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  } catch {
+    return 'hsl(0, 0%, 50%)';
+  }
+}
+
+/**
  * Format HSL values as a CSS string
  *
  * @param h - Hue (0-360)

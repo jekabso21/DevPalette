@@ -61,6 +61,28 @@ export interface ColorPalette {
   shades: ColorShades[];
 }
 
+// Interface for individual palette variation
+export interface PaletteVariation {
+  name: string;
+  description: string;
+  colors: string[];
+  shades: ColorShades[];
+  metadata?: {
+    angle?: number;
+    rotation?: number;
+    split?: number;
+    spread?: number;
+  };
+}
+
+// Interface for palette with variations
+export interface PaletteWithVariations {
+  type: PaletteType;
+  name: string;
+  description: string;
+  variations: PaletteVariation[];
+}
+
 // Props for ColorSwatch component
 export interface ColorSwatchProps {
   color: ColorSwatchData;

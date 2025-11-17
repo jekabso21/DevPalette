@@ -7,20 +7,20 @@ import {
   Text,
   useColorModeValue,
   Heading,
-  SimpleGrid,
   Fade,
   ScaleFade,
   Container,
+  Stack,
 } from '@chakra-ui/react';
 import { Header } from '@/components/Header';
 import { ColorPicker } from '@/components/ColorPicker';
-import { PaletteSection } from '@/components/ColorSchemes/PaletteSection';
-import { generateAllPalettes } from '@/utils/colorGenerator';
-import type { PaletteType, ColorPalette } from '@/types';
+import { PaletteSectionVariations } from '@/components/ColorSchemes/PaletteSectionVariations';
+import { generateAllPaletteVariations } from '@/utils/colorGeneratorVariations';
+import type { PaletteType, PaletteWithVariations } from '@/types';
 
 /**
- * Main application component - Complete redesign
- * Full-page layout with multiple color palette types
+ * Main application component - Enhanced with multiple palette variations
+ * Full-page layout with extensive color palette options
  */
 function App() {
   // Single state: the selected color
@@ -33,9 +33,9 @@ function App() {
   const headingColor = useColorModeValue('gray.800', 'white');
   const textColor = useColorModeValue('gray.600', 'gray.400');
 
-  // Generate all color palettes whenever primary color changes
-  const palettes = useMemo<Record<PaletteType, ColorPalette>>(() => {
-    return generateAllPalettes(primaryColor);
+  // Generate all color palette variations whenever primary color changes
+  const palettes = useMemo<Record<PaletteType, PaletteWithVariations>>(() => {
+    return generateAllPaletteVariations(primaryColor);
   }, [primaryColor]);
 
   // Order of palettes to display
@@ -150,10 +150,13 @@ function App() {
                       • Click "Random Color" for inspiration
                     </Text>
                     <Text fontSize="sm" color={textColor}>
+                      • Explore multiple variations per palette type
+                    </Text>
+                    <Text fontSize="sm" color={textColor}>
                       • Click any color to copy its value
                     </Text>
                     <Text fontSize="sm" color={textColor}>
-                      • Explore different palette types
+                      • Expand sections to see shade variations
                     </Text>
                   </VStack>
                 </VStack>
@@ -173,30 +176,29 @@ function App() {
                 <ScaleFade initialScale={0.9} in={true}>
                   <VStack align="start" spacing={2} mb={2}>
                     <Heading size="lg" color={headingColor}>
-                      Generated Palettes
+                      Generated Palette Variations
                     </Heading>
                     <Text fontSize="sm" color={textColor}>
-                      Explore different color harmonies based on color theory
+                      Explore multiple variations of each color harmony type for maximum creative flexibility
                     </Text>
                   </VStack>
                 </ScaleFade>
 
-                {/* Palette Grid */}
-                <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={4}>
+                {/* Palette Sections - Full width for variations */}
+                <Stack spacing={6}>
                   {paletteOrder.map((type, index) => (
                     <Fade
                       key={type}
                       in={true}
                       transition={{ enter: { delay: 0.1 + index * 0.05 } }}
                     >
-                      <PaletteSection
+                      <PaletteSectionVariations
                         palette={palettes[type]}
-                        isExpanded={type === 'monochromatic'}
-                        showShades={type === 'monochromatic'}
+                        isExpanded={type === 'monochromatic' || type === 'analogous'}
                       />
                     </Fade>
                   ))}
-                </SimpleGrid>
+                </Stack>
               </VStack>
             </Container>
           </GridItem>

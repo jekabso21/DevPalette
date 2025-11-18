@@ -27,6 +27,7 @@ export const SchemeDisplay = memo(function SchemeDisplay({
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const instructionColor = useColorModeValue('gray.500', 'gray.400');
+  const hexColor = useColorModeValue('gray.600', 'gray.400');
 
   /**
    * Convert shades to ColorSwatchData array
@@ -186,7 +187,7 @@ export const SchemeDisplay = memo(function SchemeDisplay({
                 <Text
                   fontSize="xs"
                   fontFamily="mono"
-                  color={useColorModeValue('gray.600', 'gray.400')}
+                  color={hexColor}
                   textAlign="center"
                 >
                   {swatch.hex}

@@ -4,7 +4,6 @@
 
 import { memo } from 'react';
 import {
-  Box,
   Button,
   Grid,
   Icon,

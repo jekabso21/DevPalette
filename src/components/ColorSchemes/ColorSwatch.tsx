@@ -33,6 +33,11 @@ export const ColorSwatch = memo(function ColorSwatch({
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const bgOverlay = useColorModeValue('whiteAlpha.900', 'blackAlpha.900');
   const labelBg = useColorModeValue('white', 'gray.800');
+  const tooltipBg = useColorModeValue('gray.700', 'gray.600');
+  const hoverIconColor = useColorModeValue('gray.700', 'gray.200');
+  const hoverTextColor = useColorModeValue('gray.700', 'gray.200');
+  const labelTextColor = useColorModeValue('gray.700', 'gray.200');
+  const hexTextColor = useColorModeValue('gray.600', 'gray.300');
 
   // Size configurations
   const sizeConfig = {
@@ -135,7 +140,7 @@ export const ColorSwatch = memo(function ColorSwatch({
       placement="top"
       hasArrow
       isOpen={isInteractive && isHovered && !isCopied}
-      bg={useColorModeValue('gray.700', 'gray.600')}
+      bg={tooltipBg}
     >
       <Box
         position="relative"
@@ -200,12 +205,12 @@ export const ColorSwatch = memo(function ColorSwatch({
               <Box
                 as={FaCopy}
                 fontSize={config.iconSize}
-                color={useColorModeValue('gray.700', 'gray.200')}
+                color={hoverIconColor}
               />
               <Text
                 fontSize={config.fontSize}
                 fontWeight="semibold"
-                color={useColorModeValue('gray.700', 'gray.200')}
+                color={hoverTextColor}
               >
                 Copy
               </Text>
@@ -254,7 +259,7 @@ export const ColorSwatch = memo(function ColorSwatch({
               <Text
                 fontSize="10px"
                 fontWeight="bold"
-                color={useColorModeValue('gray.700', 'gray.200')}
+                color={labelTextColor}
               >
                 {color.shade}
               </Text>
@@ -275,7 +280,7 @@ export const ColorSwatch = memo(function ColorSwatch({
                 fontSize="10px"
                 fontFamily="mono"
                 fontWeight="medium"
-                color={useColorModeValue('gray.600', 'gray.300')}
+                color={hexTextColor}
               >
                 {color.hex}
               </Text>

@@ -36,31 +36,41 @@ export const CustomToast = memo(function CustomToast({
 }: CustomToastProps) {
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const titleColor = useColorModeValue('gray.800', 'gray.100');
+  const descColor = useColorModeValue('gray.600', 'gray.400');
+  const closeHoverBg = useColorModeValue('gray.100', 'gray.700');
+  const closeColor = useColorModeValue('gray.500', 'gray.400');
+
+  // Pre-compute all color mode values
+  const successBgAccent = useColorModeValue('green.50', 'green.900');
+  const errorBgAccent = useColorModeValue('red.50', 'red.900');
+  const warningBgAccent = useColorModeValue('yellow.50', 'yellow.900');
+  const infoBgAccent = useColorModeValue('blue.50', 'blue.900');
 
   // Type-specific configurations
   const typeConfig = {
     success: {
       icon: FaCheck,
       color: 'green.500',
-      bgAccent: useColorModeValue('green.50', 'green.900'),
+      bgAccent: successBgAccent,
       borderAccent: 'green.500',
     },
     error: {
       icon: FaTimes,
       color: 'red.500',
-      bgAccent: useColorModeValue('red.50', 'red.900'),
+      bgAccent: errorBgAccent,
       borderAccent: 'red.500',
     },
     warning: {
       icon: FaExclamationTriangle,
       color: 'yellow.500',
-      bgAccent: useColorModeValue('yellow.50', 'yellow.900'),
+      bgAccent: warningBgAccent,
       borderAccent: 'yellow.500',
     },
     info: {
       icon: FaInfo,
       color: 'blue.500',
-      bgAccent: useColorModeValue('blue.50', 'blue.900'),
+      bgAccent: infoBgAccent,
       borderAccent: 'blue.500',
     },
   };
@@ -114,11 +124,11 @@ export const CustomToast = memo(function CustomToast({
 
         {/* Content */}
         <VStack align="start" flex={1} spacing={1}>
-          <Text fontWeight="semibold" fontSize="sm" color={useColorModeValue('gray.800', 'gray.100')}>
+          <Text fontWeight="semibold" fontSize="sm" color={titleColor}>
             {title}
           </Text>
           {description && (
-            <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>
+            <Text fontSize="sm" color={descColor}>
               {description}
             </Text>
           )}
@@ -133,9 +143,9 @@ export const CustomToast = memo(function CustomToast({
             icon={<FaTimes />}
             aria-label="Close notification"
             onClick={onClose}
-            color={useColorModeValue('gray.500', 'gray.400')}
+            color={closeColor}
             _hover={{
-              bg: useColorModeValue('gray.100', 'gray.700'),
+              bg: closeHoverBg,
             }}
           />
         )}
@@ -187,6 +197,7 @@ ToastContainer.displayName = 'ToastContainer';
  * Hook for creating toast notifications
  * This is a simplified version - in production, use Chakra UI's useToast
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export function createToast(props: CustomToastProps) {
   return <CustomToast {...props} />;
 }

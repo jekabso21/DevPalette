@@ -20,11 +20,13 @@ import {
   ModalBody,
   useDisclosure,
 } from '@chakra-ui/react';
-import { FaDownload } from 'react-icons/fa';
+import { FaDownload, FaUniversalAccess, FaEye } from 'react-icons/fa';
 import { Header } from '@/components/Header';
 import { ColorPicker } from '@/components/ColorPicker';
 import { PaletteSectionVariations } from '@/components/ColorSchemes/PaletteSectionVariations';
 import { ExportPanel } from '@/components/Export/ExportPanel';
+import { AccessibilityPanel } from '@/components/Accessibility/AccessibilityPanel';
+import { ComponentGradientPanel } from '@/components/Preview/ComponentGradientPanel';
 import { generateAllPaletteVariations } from '@/utils/colorGeneratorVariations';
 import { generateShades } from '@/utils/shadeGenerator';
 import type { PaletteType, PaletteWithVariations, ColorShades } from '@/types';
@@ -39,6 +41,12 @@ function App() {
 
   // Export modal state
   const { isOpen: isExportOpen, onOpen: onExportOpen, onClose: onExportClose } = useDisclosure();
+
+  // Accessibility modal state
+  const { isOpen: isAccessibilityOpen, onOpen: onAccessibilityOpen, onClose: onAccessibilityClose } = useDisclosure();
+
+  // Preview & Gradients modal state
+  const { isOpen: isPreviewOpen, onOpen: onPreviewOpen, onClose: onPreviewClose } = useDisclosure();
 
   // Theme values
   const bgColor = useColorModeValue('gray.50', 'gray.900');
@@ -145,27 +153,67 @@ function App() {
                 />
               </Fade>
 
-              {/* Export Button */}
-              <Fade in={true} transition={{ enter: { delay: 0.15 } }}>
-                <Button
-                  leftIcon={<FaDownload />}
-                  colorScheme="brand"
-                  size="lg"
-                  width="full"
-                  onClick={onExportOpen}
-                  variant="solid"
-                  _hover={{
-                    transform: 'translateY(-2px)',
-                    boxShadow: 'lg',
-                  }}
-                  transition="all 0.2s"
-                >
-                  Export Palette
-                </Button>
-              </Fade>
+              {/* Action Buttons */}
+              <VStack spacing={3}>
+                <Fade in={true} transition={{ enter: { delay: 0.15 } }}>
+                  <Button
+                    leftIcon={<FaDownload />}
+                    colorScheme="brand"
+                    size="lg"
+                    width="full"
+                    onClick={onExportOpen}
+                    variant="solid"
+                    _hover={{
+                      transform: 'translateY(-2px)',
+                      boxShadow: 'lg',
+                    }}
+                    transition="all 0.2s"
+                  >
+                    Export Palette
+                  </Button>
+                </Fade>
+
+                <Fade in={true} transition={{ enter: { delay: 0.2 } }}>
+                  <Button
+                    leftIcon={<FaUniversalAccess />}
+                    colorScheme="purple"
+                    size="lg"
+                    width="full"
+                    onClick={onAccessibilityOpen}
+                    variant="outline"
+                    _hover={{
+                      transform: 'translateY(-2px)',
+                      boxShadow: 'lg',
+                      bg: useColorModeValue('purple.50', 'purple.900'),
+                    }}
+                    transition="all 0.2s"
+                  >
+                    Check Accessibility
+                  </Button>
+                </Fade>
+
+                <Fade in={true} transition={{ enter: { delay: 0.25 } }}>
+                  <Button
+                    leftIcon={<FaEye />}
+                    colorScheme="cyan"
+                    size="lg"
+                    width="full"
+                    onClick={onPreviewOpen}
+                    variant="outline"
+                    _hover={{
+                      transform: 'translateY(-2px)',
+                      boxShadow: 'lg',
+                      bg: useColorModeValue('cyan.50', 'cyan.900'),
+                    }}
+                    transition="all 0.2s"
+                  >
+                    Preview & Gradients
+                  </Button>
+                </Fade>
+              </VStack>
 
               {/* Instructions */}
-              <Fade in={true} transition={{ enter: { delay: 0.2 } }}>
+              <Fade in={true} transition={{ enter: { delay: 0.3 } }}>
                 <VStack
                   align="start"
                   spacing={3}
@@ -255,6 +303,30 @@ function App() {
               primaryColor={primaryColor}
               onClose={onExportClose}
             />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      {/* Accessibility Modal */}
+      <Modal isOpen={isAccessibilityOpen} onClose={onAccessibilityClose} size="6xl">
+        <ModalOverlay />
+        <ModalContent maxW="90vw" maxH="90vh">
+          <ModalHeader>Accessibility Analysis</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody p={0} overflowY="auto">
+            <AccessibilityPanel shades={shades} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      {/* Preview & Gradients Modal */}
+      <Modal isOpen={isPreviewOpen} onClose={onPreviewClose} size="6xl">
+        <ModalOverlay />
+        <ModalContent maxW="90vw" maxH="90vh">
+          <ModalHeader>Preview & Gradients</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody p={0} overflowY="auto">
+            <ComponentGradientPanel shades={shades} primaryColor={primaryColor} />
           </ModalBody>
         </ModalContent>
       </Modal>

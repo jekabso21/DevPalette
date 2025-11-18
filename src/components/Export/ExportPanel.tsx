@@ -68,7 +68,7 @@ export const ExportPanel = ({ shades, primaryColor, onClose }: ExportPanelProps)
     if (colorName === 'primary' && suggestions.length > 0) {
       setColorName(suggestions[0]);
     }
-  }, [primaryColor]);
+  }, [primaryColor, colorName]);
 
   // Format the code based on selected format
   const formattedCode = useMemo(() => {

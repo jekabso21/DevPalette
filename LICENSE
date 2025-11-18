@@ -1,42 +1,17 @@
-PERSONAL USE LICENSE
+MIT License
 
 Copyright (c) 2025 jekabso21
 
-GRANT OF LICENSE
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Permission is hereby granted, free of charge, to any individual obtaining a copy
-of this software and associated documentation files (the "Software"), to use the
-Software for personal, non-commercial purposes only, subject to the following
-conditions and limitations:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-PERMITTED USES:
-1. Personal learning and education
-2. Personal portfolio projects (non-commercial)
-3. Internal use within personal projects
-4. Modifying the Software for personal use
-5. Creating derivative works for personal, non-commercial use
-6. Viewing the live demo at: https://dev-palette-5ffi.vercel.app
-
-PROHIBITED USES:
-1. Distribution, sublicensing, or selling copies of the Software (original or modified)
-2. Making the Software available for download or hosting it publicly
-3. Distributing derivative works or modified versions publicly
-4. Commercial use of any kind
-5. Incorporating the Software into products or services offered to others
-6. Removing or altering any copyright notices or this license
-
-RESTRICTIONS:
-- You may NOT distribute, publish, or share the source code (original or modified)
-- You may NOT use this Software in any commercial product or service
-- You may NOT publicly distribute derivative works or modifications
-- You may NOT remove attribution to the original author
-- You MAY modify the Software for your personal, private use only
-
-VIEWING THE APPLICATION:
-To see a demonstration of the Software's capabilities, please visit the official
-demo at: https://dev-palette-5ffi.vercel.app
-
-DISCLAIMER:
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -44,18 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-TERMINATION:
-This license and the rights granted hereunder will terminate automatically if
-you fail to comply with any of the terms and conditions herein. Upon termination,
-you must destroy all copies of the Software in your possession.
-
-QUESTIONS:
-For inquiries regarding commercial use, licensing, or permissions beyond the
-scope of this license, please contact the author through GitHub:
-https://github.com/jekabso21
-
----
-
-For the latest version and demo, visit:
-https://dev-palette-5ffi.vercel.app

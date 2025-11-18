@@ -3,7 +3,7 @@
 **DevPalette** is a comprehensive color palette generator built for developers and designers. Generate professional, harmonious color schemes from a single primary color and export them in multiple formats ready for your projects.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://dev-palette-5ffi.vercel.app)
-[![License](https://img.shields.io/badge/license-Personal%20Use-blue?style=for-the-badge)](./LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](./LICENSE)
 
 ## ✨ Features
 
@@ -127,11 +127,17 @@ Score = (colorWheelHarmony × 0.4) +
 
 ## 🤝 Contributing
 
-This project is for personal use only. See [LICENSE](./LICENSE) for details.
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📄 License
 
-**Personal Use License** - You may use this software for personal projects, but distribution, modification for public use, or commercial use is not permitted. See [LICENSE](./LICENSE) for full terms.
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details. You are free to use, modify, and distribute this software for any purpose, including commercial use.
 
 ## 👤 Author
 
